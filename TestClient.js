@@ -45,7 +45,7 @@ TestClient.prototype.onfire = function() {
   ws.on('message', function(msg, flag){
     var data = JSON.parse(msg);
     if(data.stanza && data.stanza == "message") {
-      var uuid = data.message.guid;
+      var uuid = data.friendMessage.guid;
       var createTime = self.cache[uuid];
       if(createTime) {
         var respSpendTime = new Date().getTime() - createTime;
@@ -81,7 +81,7 @@ TestClient.prototype.onfire = function() {
 
 TestClient.prototype.fireOne = function(noDelay) {
   var self = this;
-  
+
   self.fireDirectly()
 
   setInterval(function() {
@@ -93,7 +93,7 @@ TestClient.prototype.fireOne = function(noDelay) {
 TestClient.prototype.fireDirectly = function() {
   if(this.ws != null) {
     var msg = this.newMsg();
-    var uuid = msg.message.guid;
+    var uuid = msg.friendMessage.guid;
     this.cache[uuid] = new Date().getTime();
 
     this.ws.send(JSON.stringify(msg));
@@ -104,10 +104,10 @@ TestClient.prototype.fireDirectly = function() {
 
 TestClient.prototype.newMsg = function() {
   return {
-    "stanza": "message",
-    "message": {
+    "stanza": "friendMessage",
+    "friendMessage": {
       "from":    14969,
-      "to":      6452,
+      "to":      16498,
       "typ":     0,
       "content": "来自星星的老牛",
       "guid":     uuid.v1()
