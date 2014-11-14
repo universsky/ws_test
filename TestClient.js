@@ -55,7 +55,7 @@ TestClient.prototype.onfire = function() {
         self.avgSendTime = (self.totalSpendTime / self.currentTotalMessageCount).toFixed();
 
         if(self.currentTotalMessageCount < self.totalMessageCount) {
-          self.fireOne();
+          //self.fireOne();
         } else {
           ws.close();
         }
@@ -81,13 +81,12 @@ TestClient.prototype.onfire = function() {
 
 TestClient.prototype.fireOne = function(noDelay) {
   var self = this;
-  if(!noDelay && !self.sendDirect) {
-    setTimeout(function() {
-      self.fireDirectly()
-    }, self.delay)
-  } else {
+  
+  self.fireDirectly()
+
+  setInterval(function() {
     self.fireDirectly()
-  }
+  }, self.delay)
 
 };
 
