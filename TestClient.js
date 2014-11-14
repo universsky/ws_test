@@ -37,7 +37,7 @@ TestClient.prototype.onfire = function() {
   var ws = this.ws;
 
   ws.on('open', function(msg) {
-    console.log('wsocket connected');
+    //console.log('wsocket connected');
     self.heartbeat();
     self.fireOne();
   });
