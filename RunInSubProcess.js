@@ -18,7 +18,7 @@ Tester.prototype.test = function() {
 
   var self = this;
 
-  exec('node TestPerformance.js ' + this.currentCount, function(error, stdout, stderr){
+  exec('node ./pushTest/ServerLoadTest.js', function(error, stdout, stderr){
     if(error) {
       console.log("error msg: " + error);
     } else {
@@ -26,17 +26,17 @@ Tester.prototype.test = function() {
       var time = parseInt(stderr);
       console.log( time + " ms");
 
-      fs.writeFile(
-        "./results/result_aihaisi_2014-9-3.csv", 
-        self.currentCount + "," + time + "\n", 
-        {flag: "a"}, 
-        function(err, res){
-          if(err) {
-            console.log(err);
-          }
+      // fs.writeFile(
+      //   "./results/result_aihaisi_2014-11-14.csv", 
+      //   self.currentCount + "," + time + "\n", 
+      //   {flag: "a"}, 
+      //   function(err, res){
+      //     if(err) {
+      //       console.log(err);
+      //     }
 
-          self.emit('over');
-      });
+      //     self.emit('over');
+      // });
     }
   });
 

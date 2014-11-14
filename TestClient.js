@@ -7,8 +7,9 @@ var WebSocket = require("ws");
 var uuid      = require('node-uuid');
 var events    = require('events');
 var util      = require('util');
+var fs        = require('fs');
 
-var TestClient = function(url, msgCount) {
+var TestClient = function(url, msgCount, delay) {
   this.url = url;
   this.totalMessageCount = msgCount;
   this.cache = {};
@@ -17,6 +18,7 @@ var TestClient = function(url, msgCount) {
   this.avgSendTime = 0;
   this.ws = null;
   this.sendDirect = false;
+  this.delay = delay || 3000;
 
   events.EventEmitter.call(this);
 
@@ -50,6 +52,7 @@ TestClient.prototype.onfire = function() {
         
         self.totalSpendTime += respSpendTime;
         self.currentTotalMessageCount ++;
+        self.avgSendTime = (self.totalSpendTime / self.currentTotalMessageCount).toFixed();
 
         if(self.currentTotalMessageCount < self.totalMessageCount) {
           self.fireOne();
@@ -63,6 +66,7 @@ TestClient.prototype.onfire = function() {
   });
 
   ws.on('error', function(err){
+    self.showInfo();
     console.log(err);
     console.log(ws.url);
     ws.close();
@@ -76,14 +80,14 @@ TestClient.prototype.onfire = function() {
 };
 
 TestClient.prototype.fireOne = function(noDelay) {
-  // var self = this;
-  // if(!noDelay && !self.sendDirect) {
-  //   setTimeout(function() {
-  //     self.fireDirectly()
-  //   }, 5000)
-  // } else {
-  //   self.fireDirectly()
-  // }
+  var self = this;
+  if(!noDelay && !self.sendDirect) {
+    setTimeout(function() {
+      self.fireDirectly()
+    }, self.delay)
+  } else {
+    self.fireDirectly()
+  }
 
 };
 
@@ -104,7 +108,7 @@ TestClient.prototype.newMsg = function() {
     "stanza": "message",
     "message": {
       "from":    14969,
-      "to":      1242,
+      "to":      6452,
       "typ":     0,
       "content": "来自星星的老牛",
       "guid":     uuid.v1()
@@ -126,14 +130,16 @@ TestClient.prototype.heartbeat = function() {
 };
 
 TestClient.prototype.showInfo = function(respSpendTime) {
-    console.log("current spend time: " + respSpendTime);
-    this.avgSendTime = (this.totalSpendTime / this.currentTotalMessageCount).toFixed();
-    console.log(
-      this.avgSendTime + " ms ---- " + 
-      this.currentTotalMessageCount
-    );
+  // if (respSpendTime) {    
+  //   console.log("current spend time: " + respSpendTime);
+  // }
 
-    console.error(this.avgSendTime);
+  // console.log(
+  //   this.avgSendTime + " ms ---- " + 
+  //   this.currentTotalMessageCount
+  // );
+
+  // console.error(this.avgSendTime);
 };
 
 module.exports = TestClient;
