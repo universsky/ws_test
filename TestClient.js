@@ -76,14 +76,14 @@ TestClient.prototype.onfire = function() {
 };
 
 TestClient.prototype.fireOne = function(noDelay) {
-  var self = this;
-  if(!noDelay && !self.sendDirect) {
-    setTimeout(function() {
-      self.fireDirectly()
-    }, 5000)
-  } else {
-    self.fireDirectly()
-  }
+  // var self = this;
+  // if(!noDelay && !self.sendDirect) {
+  //   setTimeout(function() {
+  //     self.fireDirectly()
+  //   }, 5000)
+  // } else {
+  //   self.fireDirectly()
+  // }
 
 };
 
