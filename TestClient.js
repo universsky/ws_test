@@ -44,7 +44,7 @@ TestClient.prototype.onfire = function() {
 
   ws.on('message', function(msg, flag){
     var data = JSON.parse(msg);
-    if(data.stanza && data.stanza == "message") {
+    if(data.stanza && data.stanza == "friendMessage") {
       var uuid = data.friendMessage.guid;
       var createTime = self.cache[uuid];
       if(createTime) {
